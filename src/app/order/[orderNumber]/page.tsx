@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { formatAed } from "@/data/menu";
@@ -35,7 +35,7 @@ const STEPS: Array<{
   { key: "picked_up", label: "Picked Up", desc: "Enjoy your coffee!" },
 ];
 
-export default function OrderTrackingPage() {
+function OrderTrackingContent() {
   const params = useParams<{ orderNumber: string }>();
   const searchParams = useSearchParams();
   const orderNumber = params?.orderNumber ?? "";
@@ -212,5 +212,21 @@ export default function OrderTrackingPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function OrderTrackingPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
+          <div className="rounded-3xl border border-espresso/10 bg-white p-8 text-center text-espresso/70">
+            Loading live order status...
+          </div>
+        </div>
+      }
+    >
+      <OrderTrackingContent />
+    </Suspense>
   );
 }
