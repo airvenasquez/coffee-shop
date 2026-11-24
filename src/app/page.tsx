@@ -1,69 +1,98 @@
-import Image from "next/image";
+import Link from "next/link";
+import { FeaturedMenuSection } from "@/components/FeaturedMenuSection";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
+      {/* Hero Banner */}
+      <section className="overflow-hidden rounded-3xl bg-espresso px-6 py-10 text-cream shadow-lg sm:px-10 sm:py-14">
+        <div className="max-w-2xl">
+          <span className="inline-flex items-center gap-2 rounded-full bg-caramel/25 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-caramel-soft">
+            ✨ Skip the line · Pay at pickup
+          </span>
+          <h1 className="mt-4 font-serif text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
+            Roasted to perfection, ready when you arrive.
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="mt-4 text-base leading-relaxed text-cream/80 sm:text-lg">
+            Welcome to <span className="font-semibold text-caramel-soft">coffee-shop</span>.
+            Pick your favorite espresso, iced coffee, or warm pastry, choose your
+            pickup time, and pay at the counter.
           </p>
+
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/menu"
+              className="flex min-h-13 items-center justify-center rounded-xl bg-caramel px-6 py-3.5 text-base font-bold text-cream shadow-sm transition-colors hover:bg-caramel-dark active:scale-[0.98]"
+            >
+              Browse Full Menu →
+            </Link>
+            <Link
+              href="/cart"
+              className="flex min-h-13 items-center justify-center rounded-xl border border-cream/25 bg-espresso-light px-6 py-3.5 text-base font-semibold text-cream transition-colors hover:bg-cream/10 active:scale-[0.98]"
+            >
+              View Your Cart
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      </section>
+
+      {/* How Pickup Works */}
+      <section className="mt-10 grid gap-4 sm:grid-cols-3">
+        {[
+          {
+            step: "1",
+            title: "Choose Your Order",
+            desc: "Tap to add freshly pulled coffees and warm pastries from our 8-item menu.",
+          },
+          {
+            step: "2",
+            title: "Pick a Time",
+            desc: "Enter your name and choose when you’ll swing by—ready in as little as 10 minutes.",
+          },
+          {
+            step: "3",
+            title: "Pay at Pickup",
+            desc: "No online card needed. Just pay by cash or card when you collect at the bar.",
+          },
+        ].map((card) => (
+          <div
+            key={card.step}
+            className="rounded-2xl border border-espresso/10 bg-cream-dark/65 p-5"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-caramel text-sm font-bold text-cream">
+              {card.step}
+            </span>
+            <h2 className="mt-3 font-serif text-lg font-bold text-espresso">
+              {card.title}
+            </h2>
+            <p className="mt-1.5 text-sm leading-relaxed text-espresso/75">
+              {card.desc}
+            </p>
+          </div>
+        ))}
+      </section>
+
+      {/* Featured Favorites */}
+      <section className="mt-12">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wider text-caramel-dark">
+              Customer Favorites
+            </p>
+            <h2 className="mt-1 font-serif text-2xl font-bold text-espresso sm:text-3xl">
+              Popular Picks
+            </h2>
+          </div>
+          <Link
+            href="/menu"
+            className="text-sm font-bold text-caramel-dark underline-offset-4 hover:underline"
           >
-            Documentation
-          </a>
+            See all 8 items →
+          </Link>
         </div>
-      </main>
+
+        <FeaturedMenuSection />
+      </section>
     </div>
   );
 }
