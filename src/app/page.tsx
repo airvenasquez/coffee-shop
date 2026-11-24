@@ -14,7 +14,7 @@ export default function HomePage() {
             Roasted to perfection, ready when you arrive.
           </h1>
           <p className="mt-4 text-base leading-relaxed text-cream/80 sm:text-lg">
-            Welcome to <span className="font-semibold text-caramel-soft">coffee-shop</span>.
+            Welcome to <span className="font-semibold text-caramel-soft">Kopiloko</span>.
             Pick your favorite espresso, iced coffee, or warm pastry, choose your
             pickup time, and pay at the counter.
           </p>

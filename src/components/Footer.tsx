@@ -1,14 +1,18 @@
 import Link from "next/link";
+import { KopilokoLogo } from "@/components/KopilokoLogo";
 
 export function Footer() {
   return (
     <footer className="mt-auto border-t border-espresso/10 bg-espresso text-cream pb-24 md:pb-8">
       <div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-        <div>
-          <p className="font-serif text-lg font-bold">coffee-shop</p>
-          <p className="mt-1 text-sm text-cream/75">
-            Open daily 7:00 AM – 10:00 PM · Order ahead &amp; pay at pickup
-          </p>
+        <div className="flex items-center gap-3">
+          <KopilokoLogo className="h-9 w-9 shrink-0 text-espresso-light rounded-xl" />
+          <div>
+            <p className="font-serif text-lg font-bold">Kopiloko</p>
+            <p className="mt-0.5 text-sm text-cream/75">
+              Open daily 7:00 AM – 10:00 PM · Order ahead &amp; pay at pickup
+            </p>
+          </div>
         </div>
         <div className="flex flex-wrap gap-4 text-sm font-medium text-caramel-soft">
           <Link href="/" className="hover:text-cream">

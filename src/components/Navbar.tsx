@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { formatAed } from "@/data/menu";
+import { KopilokoLogo } from "@/components/KopilokoLogo";
 
 const NAV_LINKS = [
   { href: "/", label: "Home", icon: "🏠" },
@@ -24,12 +25,10 @@ export function Navbar() {
             href="/"
             className="flex items-center gap-2.5 text-espresso transition-opacity hover:opacity-85"
           >
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-espresso text-lg text-cream shadow-sm">
-              ☕
-            </span>
+            <KopilokoLogo className="h-10 w-10 shrink-0 text-espresso shadow-sm rounded-xl" />
             <div>
               <span className="block font-serif text-xl font-bold tracking-tight text-espresso">
-                coffee-shop
+                Kopiloko
               </span>
               <span className="block text-[11px] font-medium uppercase tracking-wider text-caramel-dark">
                 Fresh Brews &amp; Pickup

@@ -5,9 +5,9 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "coffee-shop | Fresh Brews & Quick Pickup",
+  title: "Kopiloko | Fresh Brews & Quick Pickup",
   description:
-    "Order handcrafted espresso, iced coffee, and fresh pastries for quick pay-at-pickup at coffee-shop.",
+    "Order handcrafted espresso, iced coffee, and fresh pastries for quick pay-at-pickup at Kopiloko.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
