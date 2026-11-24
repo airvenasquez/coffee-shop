@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { CartItem, useCart } from "@/context/CartContext";
-import { formatAed } from "@/data/menu";
+import { formatAed, getMenuItemImage } from "@/data/menu";
 
 const PICKUP_PRESETS = [
   "In 10 mins",
@@ -306,12 +306,19 @@ export default function CheckoutPage() {
               </Link>
             </div>
 
-            <ul className="mt-4 space-y-2.5 text-sm">
+            <ul className="mt-4 space-y-3 text-sm">
               {items.map(({ item, quantity }) => (
-                <li key={item.id} className="flex items-center justify-between gap-2">
-                  <span className="text-espresso/90">
-                    {quantity} × {item.name}
-                  </span>
+                <li key={item.id} className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <img
+                      src={getMenuItemImage(item.id)}
+                      alt={item.name}
+                      className="h-10 w-10 shrink-0 rounded-xl object-cover"
+                    />
+                    <span className="text-espresso/90">
+                      {quantity} × {item.name}
+                    </span>
+                  </div>
                   <span className="shrink-0 font-semibold text-espresso">
                     {formatAed(item.priceAed * quantity)}
                   </span>

@@ -3,91 +3,127 @@ import { FeaturedMenuSection } from "@/components/FeaturedMenuSection";
 
 export default function HomePage() {
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
-      {/* Hero Banner */}
-      <section className="overflow-hidden rounded-3xl bg-espresso px-6 py-10 text-cream shadow-lg sm:px-10 sm:py-14">
-        <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-2 rounded-full bg-caramel/25 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-caramel-soft">
-            ✨ Skip the line · Pay at pickup
-          </span>
-          <h1 className="mt-4 font-serif text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
-            Roasted to perfection, ready when you arrive.
-          </h1>
-          <p className="mt-4 text-base leading-relaxed text-cream/80 sm:text-lg">
-            Welcome to <span className="font-semibold text-caramel-soft">Kopiloko</span>.
-            Pick your favorite espresso, iced coffee, or warm pastry, choose your
-            pickup time, and pay at the counter.
-          </p>
+    <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+      {/* Editorial Luxury Hero */}
+      <section className="relative overflow-hidden rounded-[2rem] bg-espresso text-cream shadow-2xl">
+        <div className="grid items-stretch lg:grid-cols-12">
+          <div className="relative z-10 flex flex-col justify-between p-7 sm:p-10 lg:col-span-7 lg:p-12">
+            <div>
+              <span className="inline-flex items-center gap-2 rounded-full border border-caramel/40 bg-caramel/20 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-caramel-soft">
+                Specialty Roastery &amp; Bar · Pay at Pickup
+              </span>
+              <h1 className="mt-5 font-serif text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
+                Small-batch espresso, ready when you arrive.
+              </h1>
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-cream/80 sm:text-lg">
+                Welcome to <span className="font-semibold text-caramel-soft">Kopiloko</span>.
+                Single-origin Arabica pulled to order, slow-steeped cold brew, and warm
+                butter pastries—reserved on your phone and paid at the bar.
+              </p>
+            </div>
 
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/menu"
-              className="flex min-h-13 items-center justify-center rounded-xl bg-caramel px-6 py-3.5 text-base font-bold text-cream shadow-sm transition-colors hover:bg-caramel-dark active:scale-[0.98]"
-            >
-              Browse Full Menu →
-            </Link>
-            <Link
-              href="/cart"
-              className="flex min-h-13 items-center justify-center rounded-xl border border-cream/25 bg-espresso-light px-6 py-3.5 text-base font-semibold text-cream transition-colors hover:bg-cream/10 active:scale-[0.98]"
-            >
-              View Your Cart
-            </Link>
+            <div className="mt-8">
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/menu"
+                  className="flex min-h-13 items-center justify-center rounded-2xl bg-caramel px-7 py-3.5 text-base font-bold text-cream shadow-md transition-all hover:bg-caramel-dark active:scale-[0.98]"
+                >
+                  Explore the Menu →
+                </Link>
+                <Link
+                  href="/cart"
+                  className="flex min-h-13 items-center justify-center rounded-2xl border border-cream/25 bg-white/5 px-7 py-3.5 text-base font-semibold text-cream backdrop-blur-sm transition-colors hover:bg-white/10 active:scale-[0.98]"
+                >
+                  View Order Bag
+                </Link>
+              </div>
+
+              <div className="mt-8 grid grid-cols-3 gap-4 border-t border-cream/15 pt-6 text-xs sm:text-sm">
+                <div>
+                  <p className="font-serif text-lg font-bold text-caramel-soft sm:text-xl">
+                    100%
+                  </p>
+                  <p className="mt-0.5 text-cream/70">Arabica Beans</p>
+                </div>
+                <div>
+                  <p className="font-serif text-lg font-bold text-caramel-soft sm:text-xl">
+                    10 min
+                  </p>
+                  <p className="mt-0.5 text-cream/70">Express Pickup</p>
+                </div>
+                <div>
+                  <p className="font-serif text-lg font-bold text-caramel-soft sm:text-xl">
+                    AED 10+
+                  </p>
+                  <p className="mt-0.5 text-cream/70">Pay at Counter</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative min-h-64 lg:col-span-5 lg:min-h-full">
+            <img
+              src="/images/hero-kopiloko.jpg"
+              alt="Kopiloko espresso bar"
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-espresso via-espresso/20 to-transparent lg:bg-gradient-to-r lg:from-espresso lg:via-espresso/25 lg:to-transparent" />
           </div>
         </div>
       </section>
 
-      {/* How Pickup Works */}
+      {/* Three-Pillar Experience */}
       <section className="mt-10 grid gap-4 sm:grid-cols-3">
         {[
           {
-            step: "1",
-            title: "Choose Your Order",
-            desc: "Tap to add freshly pulled coffees and warm pastries from our 8-item menu.",
+            step: "01",
+            title: "Curated Menu",
+            desc: "Eight signature hot coffees, slow-steeped iced brews, and flaky French pastries.",
           },
           {
-            step: "2",
-            title: "Pick a Time",
-            desc: "Enter your name and choose when you’ll swing by—ready in as little as 10 minutes.",
+            step: "02",
+            title: "Timed to Your Walk",
+            desc: "Select a 10-minute or custom pickup window so your cup is freshly poured.",
           },
           {
-            step: "3",
-            title: "Pay at Pickup",
-            desc: "No online card needed. Just pay by cash or card when you collect at the bar.",
+            step: "03",
+            title: "Effortless Pickup",
+            desc: "Skip the queue completely and pay by cash or card when you collect.",
           },
         ].map((card) => (
           <div
             key={card.step}
-            className="rounded-2xl border border-espresso/10 bg-cream-dark/65 p-5"
+            className="rounded-3xl border border-espresso/10 bg-white/80 p-6 shadow-xs"
           >
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-caramel text-sm font-bold text-cream">
+            <span className="font-serif text-xs font-bold tracking-[0.2em] text-caramel-dark">
               {card.step}
             </span>
-            <h2 className="mt-3 font-serif text-lg font-bold text-espresso">
+            <h2 className="mt-2 font-serif text-xl font-bold text-espresso">
               {card.title}
             </h2>
-            <p className="mt-1.5 text-sm leading-relaxed text-espresso/75">
+            <p className="mt-2 text-sm leading-relaxed text-espresso/75">
               {card.desc}
             </p>
           </div>
         ))}
       </section>
 
-      {/* Featured Favorites */}
-      <section className="mt-12">
+      {/* Signature Favorites */}
+      <section className="mt-14">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-caramel-dark">
-              Customer Favorites
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-caramel-dark">
+              Barista Selections
             </p>
-            <h2 className="mt-1 font-serif text-2xl font-bold text-espresso sm:text-3xl">
-              Popular Picks
+            <h2 className="mt-1 font-serif text-3xl font-bold tracking-tight text-espresso sm:text-4xl">
+              Signature Favorites
             </h2>
           </div>
           <Link
             href="/menu"
-            className="text-sm font-bold text-caramel-dark underline-offset-4 hover:underline"
+            className="rounded-full border border-espresso/15 bg-white px-4 py-2 text-sm font-bold text-espresso transition-colors hover:bg-cream-dark"
           >
-            See all 8 items →
+            All 8 items →
           </Link>
         </div>
 

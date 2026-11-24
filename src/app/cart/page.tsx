@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { formatAed } from "@/data/menu";
+import { formatAed, getMenuItemImage } from "@/data/menu";
 
 export default function CartPage() {
   const { items, totalItems, totalPrice, isHydrated, updateQuantity, removeItem, clearCart } =
@@ -67,12 +67,11 @@ export default function CartPage() {
                 className="flex flex-col gap-4 rounded-2xl border border-espresso/10 bg-white/90 p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="flex items-center gap-3.5">
-                  <span
-                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-cream-dark text-2xl"
-                    aria-hidden="true"
-                  >
-                    {item.emoji}
-                  </span>
+                  <img
+                    src={getMenuItemImage(item.id)}
+                    alt={item.name}
+                    className="h-16 w-16 shrink-0 rounded-2xl object-cover shadow-xs"
+                  />
                   <div>
                     <h2 className="font-serif text-lg font-bold text-espresso">
                       {item.name}
