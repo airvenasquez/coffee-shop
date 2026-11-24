@@ -3,7 +3,12 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { CartItem, useCart } from "@/context/CartContext";
-import { formatAed, getMenuItemImage } from "@/data/menu";
+import {
+  formatAed,
+  formatOptionsLabel,
+  getMenuItemImage,
+  getUnitPriceAed,
+} from "@/data/menu";
 
 const PICKUP_PRESETS = [
   "In 10 mins",
@@ -14,6 +19,7 @@ const PICKUP_PRESETS = [
 
 interface ConfirmedOrder {
   orderNumber: string;
+  trackingToken: string;
   customerName: string;
   pickupTime: string;
   items: CartItem[];
@@ -58,9 +64,10 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           customerName: trimmedName,
           pickupTime: trimmedTime,
-          items: items.map(({ item, quantity }) => ({
+          items: items.map(({ item, quantity, options }) => ({
             id: item.id,
             quantity,
+            options,
           })),
         }),
       });
@@ -125,16 +132,27 @@ export default function CheckoutPage() {
             </div>
 
             <ul className="mt-3 space-y-2 text-sm">
-              {confirmedOrder.items.map(({ item, quantity }) => (
-                <li key={item.id} className="flex items-center justify-between">
-                  <span className="text-espresso">
-                    {quantity} × {item.name}
-                  </span>
-                  <span className="font-semibold text-espresso">
-                    {formatAed(item.priceAed * quantity)}
-                  </span>
-                </li>
-              ))}
+              {confirmedOrder.items.map(({ lineKey, item, quantity, options }) => {
+                const unitPrice = getUnitPriceAed(item.priceAed, options);
+                const optsLabel = formatOptionsLabel(options);
+                return (
+                  <li key={lineKey} className="flex items-start justify-between gap-2">
+                    <div>
+                      <span className="text-espresso">
+                        {quantity} × {item.name}
+                      </span>
+                      {optsLabel && (
+                        <span className="block text-xs text-caramel-dark">
+                          {optsLabel}
+                        </span>
+                      )}
+                    </div>
+                    <span className="font-semibold text-espresso">
+                      {formatAed(unitPrice * quantity)}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
 
             <div className="mt-4 flex items-center justify-between border-t border-espresso/15 pt-3">
@@ -149,16 +167,16 @@ export default function CheckoutPage() {
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Link
-              href="/menu"
-              className="flex min-h-12 flex-1 items-center justify-center rounded-xl bg-espresso px-6 py-3 text-sm font-bold text-cream transition-colors hover:bg-espresso-light"
+              href={`/order/${confirmedOrder.orderNumber}?token=${confirmedOrder.trackingToken}`}
+              className="flex min-h-12 flex-1 items-center justify-center rounded-xl bg-caramel px-6 py-3 text-sm font-bold text-cream transition-colors hover:bg-caramel-dark"
             >
-              Order More
+              Track Live Order Status →
             </Link>
             <Link
-              href="/"
+              href="/menu"
               className="flex min-h-12 items-center justify-center rounded-xl border border-espresso/20 bg-cream px-6 py-3 text-sm font-semibold text-espresso transition-colors hover:bg-cream-dark"
             >
-              Back to Home
+              Order More
             </Link>
           </div>
         </div>
@@ -307,23 +325,34 @@ export default function CheckoutPage() {
             </div>
 
             <ul className="mt-4 space-y-3 text-sm">
-              {items.map(({ item, quantity }) => (
-                <li key={item.id} className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2.5">
-                    <img
-                      src={getMenuItemImage(item.id)}
-                      alt={item.name}
-                      className="h-10 w-10 shrink-0 rounded-xl object-cover"
-                    />
-                    <span className="text-espresso/90">
-                      {quantity} × {item.name}
+              {items.map(({ lineKey, item, quantity, options }) => {
+                const unitPrice = getUnitPriceAed(item.priceAed, options);
+                const optsLabel = formatOptionsLabel(options);
+                return (
+                  <li key={lineKey} className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2.5">
+                      <img
+                        src={getMenuItemImage(item.id, item.imageUrl)}
+                        alt={item.name}
+                        className="h-10 w-10 shrink-0 rounded-xl object-cover"
+                      />
+                      <div>
+                        <span className="text-espresso/90">
+                          {quantity} × {item.name}
+                        </span>
+                        {optsLabel && (
+                          <span className="block text-[11px] text-caramel-dark">
+                            {optsLabel}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <span className="shrink-0 font-semibold text-espresso">
+                      {formatAed(unitPrice * quantity)}
                     </span>
-                  </div>
-                  <span className="shrink-0 font-semibold text-espresso">
-                    {formatAed(item.priceAed * quantity)}
-                  </span>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
 
             <div className="mt-4 flex items-center justify-between border-t border-espresso/15 pt-4">

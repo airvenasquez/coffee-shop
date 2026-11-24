@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { formatAed, MenuCategory, MenuItem } from "@/data/menu";
 import { MenuItemCard } from "@/components/MenuItemCard";
@@ -13,8 +13,12 @@ const CATEGORIES: Array<"All" | MenuCategory> = [
   "Pastries",
 ];
 
+const QUICK_TAGS = ["Best Seller", "Dairy-Free"] as const;
+
 export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState<"All" | MenuCategory>("All");
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -50,10 +54,25 @@ export default function MenuPage() {
     };
   }, []);
 
-  const filteredItems =
-    selectedCategory === "All"
-      ? menuItems
-      : menuItems.filter((item) => item.category === selectedCategory);
+  const filteredItems = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return menuItems.filter((item) => {
+      if (selectedCategory !== "All" && item.category !== selectedCategory) {
+        return false;
+      }
+      if (selectedTag && !(item.tags ?? []).includes(selectedTag)) {
+        return false;
+      }
+      if (
+        query &&
+        !item.name.toLowerCase().includes(query) &&
+        !item.description.toLowerCase().includes(query)
+      ) {
+        return false;
+      }
+      return true;
+    });
+  }, [menuItems, selectedCategory, selectedTag, searchQuery]);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
@@ -66,7 +85,7 @@ export default function MenuPage() {
             Our Menu
           </h1>
           <p className="mt-2 text-sm text-espresso/75 sm:text-base">
-            Tap any item to add it to your pickup order.
+            Customize your drink or tap to add directly to your pickup bag.
           </p>
         </div>
 
@@ -82,9 +101,43 @@ export default function MenuPage() {
         )}
       </div>
 
-      {/* Category Filter Pills - easy horizontal scroll on small phones */}
+      {/* Search & Quick Dietary Filters */}
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative flex-1 sm:max-w-xs">
+          <input
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search espresso, croissant..."
+            aria-label="Search menu"
+            className="min-h-11 w-full rounded-2xl border border-espresso/15 bg-white px-4 py-2.5 text-sm text-espresso placeholder:text-espresso/45 focus:border-caramel focus:outline-none focus:ring-2 focus:ring-caramel/25"
+          />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          {QUICK_TAGS.map((tag) => {
+            const active = selectedTag === tag;
+            return (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => setSelectedTag(active ? null : tag)}
+                className={`min-h-10 rounded-full px-4 py-1.5 text-xs font-bold transition-colors ${
+                  active
+                    ? "bg-caramel text-cream shadow-xs"
+                    : "border border-espresso/15 bg-white text-espresso/80 hover:bg-cream-dark"
+                }`}
+              >
+                {tag}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Category Filter Pills */}
       <div
-        className="mt-6 flex gap-2 overflow-x-auto pb-2"
+        className="mt-4 flex gap-2 overflow-x-auto pb-2"
         role="tablist"
         aria-label="Menu categories"
       >
@@ -115,7 +168,7 @@ export default function MenuPage() {
           {[1, 2, 3, 4].map((skeleton) => (
             <div
               key={skeleton}
-              className="h-44 animate-pulse rounded-2xl border border-espresso/10 bg-white/60 p-5"
+              className="h-72 animate-pulse rounded-3xl border border-espresso/10 bg-white/60 p-5"
             />
           ))}
         </div>
@@ -123,8 +176,25 @@ export default function MenuPage() {
         <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-sm font-medium text-red-800">
           {error}
         </div>
+      ) : filteredItems.length === 0 ? (
+        <div className="mt-6 rounded-3xl border border-espresso/10 bg-white/80 p-8 text-center">
+          <p className="font-serif text-lg font-bold text-espresso">
+            No matching items found
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedCategory("All");
+              setSelectedTag(null);
+              setSearchQuery("");
+            }}
+            className="mt-3 rounded-xl bg-espresso px-4 py-2 text-xs font-bold text-cream"
+          >
+            Reset Filters
+          </button>
+        </div>
       ) : (
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
+        <div className="mt-6 grid gap-5 sm:grid-cols-2">
           {filteredItems.map((item) => (
             <MenuItemCard key={item.id} item={item} />
           ))}

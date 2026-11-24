@@ -5,9 +5,16 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Kopiloko | Fresh Brews & Quick Pickup",
+  title: "Kopiloko | Specialty Roastery & Express Pickup",
   description:
-    "Order handcrafted espresso, iced coffee, and fresh pastries for quick pay-at-pickup at Kopiloko.",
+    "Order handcrafted espresso, slow-steeped iced coffee, and warm butter pastries for quick pay-at-pickup at Kopiloko.",
+  openGraph: {
+    title: "Kopiloko | Specialty Roastery & Express Pickup",
+    description:
+      "Small-batch espresso, iced coffee, and fresh pastries. Order ahead and pay at pickup.",
+    images: ["/images/hero-kopiloko.jpg"],
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

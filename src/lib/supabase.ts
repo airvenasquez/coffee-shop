@@ -8,6 +8,8 @@ export interface SupabaseMenuRow {
   category: string;
   description: string;
   emoji: string;
+  image_url?: string | null;
+  tags?: string[] | null;
   featured: boolean;
   sort_order: number;
   is_available: boolean;
@@ -39,6 +41,22 @@ export function createSupabaseClient(): SupabaseClient {
   });
 }
 
+export function createSupabaseAdminClient(): SupabaseClient {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+
+  if (!url || !serviceKey) {
+    throw new Error("Admin Supabase credentials are not configured on the server.");
+  }
+
+  return createClient(url, serviceKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  });
+}
+
 export function mapMenuRow(row: SupabaseMenuRow): MenuItem {
   return {
     id: row.id,
@@ -47,6 +65,8 @@ export function mapMenuRow(row: SupabaseMenuRow): MenuItem {
     category: row.category as MenuCategory,
     description: row.description,
     emoji: row.emoji,
+    imageUrl: row.image_url ?? undefined,
+    tags: Array.isArray(row.tags) ? row.tags : [],
     featured: row.featured,
   };
 }

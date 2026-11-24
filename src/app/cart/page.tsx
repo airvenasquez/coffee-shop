@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { formatAed, getMenuItemImage } from "@/data/menu";
+import {
+  formatAed,
+  formatOptionsLabel,
+  getMenuItemImage,
+  getUnitPriceAed,
+} from "@/data/menu";
 
 export default function CartPage() {
   const { items, totalItems, totalPrice, isHydrated, updateQuantity, removeItem, clearCart } =
@@ -61,65 +66,75 @@ export default function CartPage() {
       ) : (
         <div className="mt-6 space-y-4">
           <div className="space-y-3">
-            {items.map(({ item, quantity }) => (
-              <div
-                key={item.id}
-                className="flex flex-col gap-4 rounded-2xl border border-espresso/10 bg-white/90 p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between"
-              >
-                <div className="flex items-center gap-3.5">
-                  <img
-                    src={getMenuItemImage(item.id)}
-                    alt={item.name}
-                    className="h-16 w-16 shrink-0 rounded-2xl object-cover shadow-xs"
-                  />
-                  <div>
-                    <h2 className="font-serif text-lg font-bold text-espresso">
-                      {item.name}
-                    </h2>
-                    <p className="text-sm text-espresso/70">
-                      {formatAed(item.priceAed)} each
-                    </p>
-                  </div>
-                </div>
+            {items.map(({ lineKey, item, quantity, options }) => {
+              const unitPrice = getUnitPriceAed(item.priceAed, options);
+              const optionsLabel = formatOptionsLabel(options);
 
-                <div className="flex items-center justify-between gap-3 sm:justify-end">
-                  <div className="flex items-center rounded-xl bg-cream-dark p-1">
-                    <button
-                      type="button"
-                      onClick={() => updateQuantity(item.id, quantity - 1)}
-                      aria-label={`Decrease quantity of ${item.name}`}
-                      className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-lg font-bold text-espresso shadow-xs transition-colors hover:bg-caramel-soft active:scale-95"
-                    >
-                      −
-                    </button>
-                    <span className="w-10 text-center text-sm font-bold text-espresso">
-                      {quantity}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => updateQuantity(item.id, quantity + 1)}
-                      aria-label={`Increase quantity of ${item.name}`}
-                      className="flex h-10 w-10 items-center justify-center rounded-lg bg-caramel text-lg font-bold text-cream shadow-xs transition-colors hover:bg-caramel-dark active:scale-95"
-                    >
-                      +
-                    </button>
+              return (
+                <div
+                  key={lineKey}
+                  className="flex flex-col gap-4 rounded-2xl border border-espresso/10 bg-white/90 p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <img
+                      src={getMenuItemImage(item.id, item.imageUrl)}
+                      alt={item.name}
+                      className="h-16 w-16 shrink-0 rounded-2xl object-cover shadow-xs"
+                    />
+                    <div>
+                      <h2 className="font-serif text-lg font-bold text-espresso">
+                        {item.name}
+                      </h2>
+                      {optionsLabel && (
+                        <p className="text-xs font-semibold text-caramel-dark">
+                          {optionsLabel}
+                        </p>
+                      )}
+                      <p className="text-sm text-espresso/70">
+                        {formatAed(unitPrice)} each
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="text-right">
-                    <p className="text-base font-bold text-espresso">
-                      {formatAed(item.priceAed * quantity)}
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => removeItem(item.id)}
-                      className="mt-0.5 text-xs font-semibold text-caramel-dark hover:underline"
-                    >
-                      Remove
-                    </button>
+                  <div className="flex items-center justify-between gap-3 sm:justify-end">
+                    <div className="flex items-center rounded-xl bg-cream-dark p-1">
+                      <button
+                        type="button"
+                        onClick={() => updateQuantity(lineKey, quantity - 1)}
+                        aria-label={`Decrease quantity of ${item.name}`}
+                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-lg font-bold text-espresso shadow-xs transition-colors hover:bg-caramel-soft active:scale-95"
+                      >
+                        −
+                      </button>
+                      <span className="w-10 text-center text-sm font-bold text-espresso">
+                        {quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => updateQuantity(lineKey, quantity + 1)}
+                        aria-label={`Increase quantity of ${item.name}`}
+                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-caramel text-lg font-bold text-cream shadow-xs transition-colors hover:bg-caramel-dark active:scale-95"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    <div className="text-right">
+                      <p className="text-base font-bold text-espresso">
+                        {formatAed(unitPrice * quantity)}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => removeItem(lineKey)}
+                        className="mt-0.5 text-xs font-semibold text-caramel-dark hover:underline"
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Summary Card */}
